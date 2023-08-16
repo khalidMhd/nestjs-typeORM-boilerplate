@@ -13,9 +13,9 @@ export class UserController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get('get-user-by-id')
-  getUserById(@Request() req,) {
-    console.log(req.user);
-    return req.user
+  getUserById(@Request() req) {
+    const userId = req.user.id;
+    return this.userService.getUserById(userId);
   }
 
   @UseGuards(AuthGuard('jwt'))

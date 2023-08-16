@@ -26,8 +26,18 @@ export class UserService {
     }
   }
 
-  getUserById(): string {
-    return 'Hello World!';
+  async getUserById(userId): Promise<User | null> {
+    try {
+      const user = await this.userRepository.findOne({
+        where: { id: userId },
+      });
+      if (!user) {
+        throw new NotFoundException('No user records found');
+      }
+      return user;
+    } catch (error) {
+      throw new ConflictException(error.message);
+    }
   }
 
   async getUserByEmail(email: string): Promise<User | null> {
