@@ -6,6 +6,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
+import { UserResponseDTO } from './tdo/user.dto';
 
 @Injectable()
 export class UserService {
@@ -26,7 +27,7 @@ export class UserService {
     }
   }
 
-  async getUserById(userId): Promise<User | null> {
+  async getUserById(userId): Promise<UserResponseDTO | null> {
     try {
       const user = await this.userRepository.findOne({
         where: { id: userId },

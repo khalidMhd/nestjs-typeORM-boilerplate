@@ -1,6 +1,15 @@
-import { Controller, Get, Param, UseGuards, Request } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  UseGuards,
+  Request,
+  UseInterceptors,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { AuthGuard } from '@nestjs/passport';
+import { TransformInterceptor } from '../../Interceptor/transform.interceptor';
+import { UserResponseDTO } from './tdo/user.dto';
 
 @Controller('user')
 export class UserController {
@@ -13,9 +22,11 @@ export class UserController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get('get-user-by-id')
-  getUserById(@Request() req) {
+  // @UseInterceptors(TransformInterceptor)
+  async getUserById(@Request() req): Promise<UserResponseDTO> {
     const userId = req.user.id;
-    return this.userService.getUserById(userId);
+    const user = await this.userService.getUserById(userId);
+    return user;
   }
 
   @UseGuards(AuthGuard('jwt'))
