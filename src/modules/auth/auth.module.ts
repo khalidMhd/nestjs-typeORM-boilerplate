@@ -10,12 +10,11 @@ import { JwtStrategy } from 'src/modules/auth/guards/jwt.strategy';
   imports: [
     TypeOrmModule.forFeature([User]),
     JwtModule.register({
-      secret: String(process.env.JWT_KEY) || 'asdfghjkl',
+      secret: (process.env.JWT_KEY as string) || 'asdfghjkl',
       // signOptions: { expiresIn: '1d' },
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy]
-  
+  providers: [AuthService, JwtStrategy],
 })
 export class AuthModule {}

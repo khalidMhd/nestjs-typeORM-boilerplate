@@ -15,6 +15,7 @@ import { UserResponseDTO } from './tdo/user.dto';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @UseGuards(AuthGuard('jwt'))
   @Get('get-users')
   getUsers() {
     return this.userService.getUsers();

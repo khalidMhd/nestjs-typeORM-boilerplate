@@ -10,7 +10,6 @@ import { User } from 'src/modules/user/entities/user.entity';
 import { AuthSignupDto } from './tdo/auth-signup.dto';
 import { JwtService } from '@nestjs/jwt';
 import { AuthLoginDto } from './tdo/auth-login.dto';
-
 @Injectable()
 export class AuthService {
   constructor(
@@ -63,8 +62,8 @@ export class AuthService {
         throw new UnauthorizedException('Invalid credentials');
       }
 
-      const payload = { id: user.id, email: user.email };
-      const token = this.jwtService.sign(payload);
+      const payload = { sub: user.id, id: user.id, email: user.email };
+      const token = await this.jwtService.signAsync(payload);
 
       return token;
     } catch (error) {
@@ -90,7 +89,10 @@ export class AuthService {
       }
 
       // Update password
-      user.password = await bcrypt.hash(newPassword, Number(process.env.BCRYPT_KEY));
+      user.password = await bcrypt.hash(
+        newPassword,
+        Number(process.env.BCRYPT_KEY),
+      );
       await this.userRepository.save(user);
 
       return { message: 'Password changed successfully' };

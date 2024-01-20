@@ -22,7 +22,7 @@ export class UserService {
         throw new NotFoundException('No user records found');
       }
       return user;
-    } catch (error) {
+    } catch (error) {      
       throw new ConflictException(error.message);
     }
   }
@@ -39,6 +39,10 @@ export class UserService {
     } catch (error) {
       throw new ConflictException(error.message);
     }
+  }
+
+  findUserById(id: number) {
+    return this.userRepository.findOneOrFail({ where: { id: id } });
   }
 
   async getUserByEmail(email: string): Promise<User | null> {

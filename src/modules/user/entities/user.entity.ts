@@ -4,8 +4,10 @@ import {
   Column,
   CreateDateColumn,
   BeforeInsert,
+  OneToMany,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { Todo } from 'src/modules/todo/entities/todo.entity';
 
 @Entity('users') // Specify the table name
 export class User {
@@ -23,6 +25,10 @@ export class User {
 
   @CreateDateColumn()
   createdAt: Date;
+
+  // one user can have multipe todos
+  @OneToMany(() => Todo, (todo) => todo.user)
+  todos: Todo[];
 
   @BeforeInsert()
   async hashPassword() {

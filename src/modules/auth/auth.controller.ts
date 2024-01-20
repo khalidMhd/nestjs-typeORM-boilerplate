@@ -40,7 +40,7 @@ export class AuthController {
     try {
       const token = await this.authService.login(loginDto);
       return { accessToken: token };
-    } catch (error) {      
+    } catch (error) {
       throw new ConflictException(error.message);
     }
   }
